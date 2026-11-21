@@ -1,0 +1,106 @@
+{
+ "result": {
+  "language": "en"
+ },
+ "transcription": [
+  {
+   "timestamps": {
+    "from": "00:00:00,000",
+    "to": "00:00:00,130"
+   },
+   "offsets": {
+    "from": 0,
+    "to": 130
+   },
+   "text": ""
+  },
+  {
+   "timestamps": {
+    "from": "00:00:00,130",
+    "to": "00:00:00,170"
+   },
+   "offsets": {
+    "from": 130,
+    "to": 170
+   },
+   "text": " So"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:00,170",
+    "to": "00:00:00,500"
+   },
+   "offsets": {
+    "from": 170,
+    "to": 500
+   },
+   "text": " this"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:00,500",
+    "to": "00:00:00,680"
+   },
+   "offsets": {
+    "from": 500,
+    "to": 680
+   },
+   "text": " is"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:00,680",
+    "to": "00:00:01,170"
+   },
+   "offsets": {
+    "from": 680,
+    "to": 1170
+   },
+   "text": " it."
+  },
+  {
+   "timestamps": {
+    "from": "00:00:01,170",
+    "to": "00:00:01,450"
+   },
+   "offsets": {
+    "from": 1170,
+    "to": 1450
+   },
+   "text": " Here"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:01,450",
+    "to": "00:00:01,590"
+   },
+   "offsets": {
+    "from": 1450,
+    "to": 1590
+   },
+   "text": " we"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:01,590",
+    "to": "00:00:01,750"
+   },
+   "offsets": {
+    "from": 1590,
+    "to": 1750
+   },
+   "text": " go"
+  },
+  {
+   "timestamps": {
+    "from": "00:00:01,750",
+    "to": "00:00:02,000"
+   },
+   "offsets": {
+    "from": 1750,
+    "to": 2000
+   },
+   "text": " now."
+  }
+ ]
+}
