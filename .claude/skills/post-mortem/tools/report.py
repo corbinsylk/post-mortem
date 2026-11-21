@@ -67,6 +67,14 @@ def ts(seconds):
     return f"{s // 60}:{s % 60:02d}"
 
 
+def _title(caption, limit=44):
+    """The caption's first line, cut on a word with an ellipsis when it is long."""
+    line = (caption or "").strip().splitlines()[0].strip() if (caption or "").strip() else ""
+    if len(line) <= limit:
+        return line or "your reel"
+    return line[:limit].rsplit(" ", 1)[0].rstrip(" ,;:-") + "…"
+
+
 def _load(run):
     run = Path(run)
     read = lambda n: json.loads((run / n).read_text(encoding="utf-8"))  # noqa: E731
@@ -132,7 +140,7 @@ def render_html(run):
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Post-Mortem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="{FONTS}" rel="stylesheet"><style>{CSS}</style></head><body><div class="wrap">
-<header><img src="{wm}" alt="CreatorPro"><div class="label">Post-Mortem · {e(reel.get("caption", "")[:60] or "your reel")}</div></header>
+<header><img src="{wm}" alt="CreatorPro"><div class="label">Post-Mortem · {e(_title(reel.get("caption")))}</div></header>
 <h1>People swiped away <em>{where}</em>.</h1>
 <p class="lede">{e(round(m["lost"]))}% of viewers left between {ts(m["start"])} and {ts(m["end"])}. Here's what you were saying
 right then, why it lost them, and two ways to rewrite it.</p>

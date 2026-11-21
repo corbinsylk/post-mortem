@@ -26,3 +26,10 @@ class TestSkillDoc(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestMishearing(unittest.TestCase):
+    def test_skill_says_fix_mishearings_keep_times(self):
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("Fix what the transcriber misheard", text)
+        self.assertIn("keeping every time as it is", text)

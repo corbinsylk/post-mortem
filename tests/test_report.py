@@ -79,3 +79,13 @@ class TestReport(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestHeader(unittest.TestCase):
+    def test_long_caption_cut_on_a_word(self):
+        run = copy_run()
+        edit(run, "reel.json", lambda d: d.update(
+            caption="Effect of the Day 10 - the x-ray flicker. One Claude Code prompt and it's done\n#claude #ai"))
+        h = report.render_html(run)
+        self.assertIn("Effect of the Day 10 - the x-ray flicker.…", h)
+        self.assertNotIn("One Claude", h.split("</header>")[0])

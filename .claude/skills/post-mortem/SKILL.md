@@ -56,6 +56,11 @@ Say one line while it runs ("Reading your reel"). If `pull.py` fails on a link, 
 words: Instagram wouldn't let it download, so ask them to save the reel and send the **video file**, then run `pull.py`
 again with the file. A reel with no speech is fine: carry on (the transcript is empty).
 
+**Fix what the transcriber misheard.** It's free and local, so it gets a few words wrong, usually names and slang
+("Claude" heard as "claw", "feed" as "feet", "reels" as "real"). Read `RUN/transcript.json` with the reel's topic in
+mind and correct only those obvious mishearings in its `sentences` text, keeping every time as it is. Never change
+what they actually said.
+
 ## 3. Read the graph into `curve.json`
 
 Look at the screenshot and find the retention graph (a line falling from 100% on the left). Read it like this:
@@ -95,8 +100,8 @@ fix `curve.json` and run it again.
 
 ## 5. Rewrite that part, in their voice
 
-1. **Read the whole transcript first** (`RUN/transcript.json`), not just the drop-off lines. Note in 3 to 5 plain lines
-   how this person talks: sentence length, how they open lines ("So", "Now", "Look"), words and phrases they repeat,
+1. **Read the whole transcript first** (`RUN/transcript.json`), not just the drop-off lines. Note in 3 to 5 plain lines,
+   each backed by something said in this reel, how this person talks: sentence length, how they open lines ("So", "Now", "Look"), words and phrases they repeat,
    how they address the viewer, their energy. Note the topic and the point of the reel.
 2. **Find why people left at that moment.** Read the drop-off lines in context. Common reasons: a slow setup before
    the point, repeating something already said, a vague promise, explaining the process instead of showing the result,
