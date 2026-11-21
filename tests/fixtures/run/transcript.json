@@ -1,0 +1,36 @@
+{
+ "language": "en",
+ "words": [],
+ "sentences": [
+  {
+   "s": 0.2,
+   "e": 4.0,
+   "text": "Here's how I edit a reel in ten minutes."
+  },
+  {
+   "s": 4.0,
+   "e": 15.5,
+   "text": "First I open the project."
+  },
+  {
+   "s": 15.5,
+   "e": 18.2,
+   "text": "Then I check <b>&\"🔥 the settings."
+  },
+  {
+   "s": 18.2,
+   "e": 20.5,
+   "text": "Now let me explain the setup again."
+  },
+  {
+   "s": 20.5,
+   "e": 24.0,
+   "text": "So the export is fast."
+  },
+  {
+   "s": 24.0,
+   "e": 30.0,
+   "text": "And that's it."
+  }
+ ]
+}

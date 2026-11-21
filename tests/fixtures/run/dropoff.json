@@ -1,0 +1,17 @@
+{
+ "main": {
+  "start": 18.0,
+  "end": 20.0,
+  "at": 19.12,
+  "lost": 18.0,
+  "in_hook": false
+ },
+ "also": null,
+ "words": {
+  "from": 15.5,
+  "to": 24.0,
+  "text": "Then I check <b>&\"🔥 the settings. Now let me explain the setup again. So the export is fast."
+ },
+ "also_words": null,
+ "length": 60.0
+}

@@ -1,0 +1,20 @@
+{
+ "voice": [
+  "Short, plain sentences",
+  "Starts lines with So and Now",
+  "Talks to one person"
+ ],
+ "why": "You went back to explaining the setup you'd already covered, so the reel stopped moving.",
+ "original": "Then I check <b>&\"🔥 the settings. Now let me explain the setup again.",
+ "rewrites": [
+  {
+   "label": "Close",
+   "text": "Then I check the settings, and this is the part that saves the time."
+  },
+  {
+   "label": "Bolder",
+   "text": "Skip the setup <now>. Here's the one setting that cuts the export in half."
+  }
+ ],
+ "stats": null
+}
