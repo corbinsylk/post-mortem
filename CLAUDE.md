@@ -16,8 +16,8 @@ Its instructions are in that folder's `SKILL.md`.
 3. Run `python3 tools/doctor.py` from the installed folder. Install anything it lists (on a Mac: `brew install yt-dlp
    ffmpeg whisper-cpp`, then `python3 tools/doctor.py --get-model`). Tell them in plain words what you're installing
    and why ("the free transcriber, so your reel is read on your own computer"). Run it again until it says READY.
-4. Tell them: "Done. Type /post-mortem. It works best in the Claude desktop app. If it doesn't show, start a
-   new chat."
+4. Tell them: "Done. Type /post-mortem and send me your reel and a screenshot of its retention graph. If it
+   doesn't show, start a new chat."
 
 An update is the same steps; the copy replaces the old one.
 
