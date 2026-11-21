@@ -82,3 +82,11 @@ class TestGetSound(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestNoYtDlpProgram(unittest.TestCase):
+    def test_missing_program_fails_cleanly(self):
+        def run(cmd, **kw):
+            raise FileNotFoundError(cmd[0])
+        r = pull.get_sound("https://www.instagram.com/reel/x/", tempfile.mkdtemp(), run=run)
+        self.assertEqual(r["status"], "failed")

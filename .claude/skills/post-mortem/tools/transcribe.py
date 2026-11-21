@@ -21,12 +21,19 @@ GAP = 0.8  # seconds of silence that ends a sentence even without punctuation
 _END = (".", "?", "!", "…")
 
 
+def _is_word(text):
+    """False for non-speech tokens: [Music], (laughs), *music*, ♪, and anything with no letter or digit."""
+    if re.fullmatch(r"\[.*\]|\(.*\)|\*.*\*", text):
+        return False
+    return any(ch.isalnum() for ch in text)
+
+
 def parse_whisper_json(data):
     """whisper.cpp JSON made with -ml 1 -sow (one word per segment) -> [{"s", "e", "w"}]; empty tokens dropped."""
     words = []
     for seg in data.get("transcription", []):
         text = (seg.get("text") or "").strip()
-        if not text or re.fullmatch(r"\[.*\]|\(.*\)", text):  # [Music], (laughs)
+        if not _is_word(text):
             continue
         off = seg.get("offsets", {})
         words.append({"s": round(off.get("from", 0) / 1000, 3), "e": round(off.get("to", 0) / 1000, 3), "w": text})
@@ -52,7 +59,7 @@ def sentences(words):
 def _whisper_cli(audio, run=subprocess.run):
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / "out"
-        r = run(["whisper-cli", "-m", str(MODEL), "-l", "auto", "-ml", "1", "-sow", "-oj", "-of", str(base),
+        r = run(["whisper-cli", "-m", str(MODEL), "-l", "auto", "-ml", "1", "-sow", "-sns", "-oj", "-of", str(base),
                  "-f", str(audio)], capture_output=True, text=True)
         if r.returncode != 0:
             raise RuntimeError((r.stderr or "whisper-cli failed").strip()[-300:])
@@ -67,7 +74,7 @@ def _faster_whisper(audio):
     model = WhisperModel("base", compute_type="int8")
     segments, info = model.transcribe(str(audio), word_timestamps=True)
     words = [{"s": round(w.start, 3), "e": round(w.end, 3), "w": w.word.strip()}
-             for s in segments for w in (s.words or []) if w.word.strip()]
+             for s in segments for w in (s.words or []) if _is_word(w.word.strip())]
     return {"language": info.language or "", "words": words}
 
 

@@ -97,3 +97,22 @@ class TestWordsAt(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestReviewFixes(unittest.TestCase):
+    def test_long_mid_slide_is_found(self):
+        r = find([[0, 100], [3, 72], [20, 68], [26, 38], [60, 30]])
+        self.assertFalse(r["main"]["in_hook"])
+        self.assertTrue(20 <= r["main"]["at"] <= 26)
+
+    def test_xray_hook_tail_still_not_a_drop(self):
+        self.assertTrue(find(XRAY)["main"]["in_hook"])
+
+    def test_graph_length_mismatch_stops(self):
+        run = Path(tempfile.mkdtemp())
+        (run / "reel.json").write_text(json.dumps({"status": "ok", "duration": 30.0}), encoding="utf-8")
+        (run / "transcript.json").write_text(json.dumps({"words": [], "sentences": []}), encoding="utf-8")
+        (run / "curve.json").write_text(json.dumps({"points": [[0, 100], [10, 50], [60, 30], [120, 10]],
+                                                    "tooltip": None, "end_label": 120}), encoding="utf-8")
+        self.assertEqual(dropoff.main([str(run)]), 2)
+        self.assertFalse((run / "dropoff.json").exists())

@@ -34,3 +34,23 @@ class TestTranscribe(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestNoFakeWords(unittest.TestCase):
+    def test_music_tokens_dropped(self):
+        data = {"transcription": [{"offsets": {"from": 0, "to": 500}, "text": " ♪"},
+                                  {"offsets": {"from": 500, "to": 900}, "text": " *music*"},
+                                  {"offsets": {"from": 900, "to": 1200}, "text": " [Music]"},
+                                  {"offsets": {"from": 1200, "to": 1500}, "text": " Hi."}]}
+        self.assertEqual([w["w"] for w in transcribe.parse_whisper_json(data)], ["Hi."])
+
+    def test_whisper_cli_suppresses_non_speech(self):
+        calls = []
+
+        def run(cmd, **kw):
+            calls.append(cmd)
+            Path(cmd[cmd.index("-of") + 1] + ".json").write_text('{"transcription": []}', encoding="utf-8")
+            from types import SimpleNamespace
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+        transcribe._whisper_cli("a.wav", run=run)
+        self.assertIn("-sns", calls[0])

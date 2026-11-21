@@ -8,7 +8,7 @@ from the retention graph screenshot: {"points": [[seconds, percent], ...], "tool
 
 The rules: the first 3 seconds (the hook) are judged on their own, because almost every graph falls hard there. A
 later drop wins when at least 8 points of the audience leave within 2 seconds AND that fall is clearly steeper than
-the seconds just before and after it (a cliff, not the hook's tail still sliding). The last 3 seconds are ignored:
+the curve a few seconds before and after it (a cliff or a long slide, not the hook's tail still sliding). The last 3 seconds are ignored:
 people finishing the reel is not a drop-off.
 """
 import json
@@ -73,8 +73,11 @@ def find_dropoffs(curve, length, hook=3.0, tail=3.0, min_drop=8.0, window=2.0, t
     cands, t = [], hook
     while t + window <= length - tail + 1e-9:
         here = loss(t)
-        around = max(loss(max(t - window, 0.0)), loss(t + window) if t + 2 * window <= length else 0.0)
-        cands.append((here, here - around, t))
+        # compared with the curve 2 windows either side (review fix): a cliff or a long slide beats both, while the
+        # hook's tail still sliding at 0:03-0:07 doesn't, because 2 windows back is still inside the hook's fall
+        before = loss(max(t - 2 * window, 0.0))
+        after = loss(t + 2 * window) if t + 3 * window <= length else 0.0
+        cands.append((here, here - max(before, after), t))
         t += STEP
     main_c = [c for c in cands if c[0] >= min_drop and c[1] >= min_drop / 2]
     hook_drop = _drop(curve, 0.0, min(hook, length), True, tooltip)
@@ -106,7 +109,11 @@ def main(argv):
     read = lambda name: json.loads((run / name).read_text(encoding="utf-8"))  # noqa: E731
     reel, transcript, data = read("reel.json"), read("transcript.json"), read("curve.json")
     length = float(reel.get("duration") or data.get("end_label") or 0)
+    end_label = data.get("end_label")
     try:
+        if isinstance(end_label, (int, float)) and length > 0 and abs(end_label - length) > 0.1 * length + 1:
+            raise ValueError(f"The graph says the reel is {end_label:g} seconds long, but this reel is {length:g} seconds. "
+                             "Make sure the screenshot and the reel are the same one, or send a clearer screenshot.")
         if length <= 0:
             raise ValueError("I don't know how long the reel is. Send the reel's link or video file again.")
         curve = load_curve(data, length)

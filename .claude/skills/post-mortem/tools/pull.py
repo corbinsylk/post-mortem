@@ -7,6 +7,7 @@ no config, no retries, a time limit. A file (a trial reel, a private reel, or on
 taken out with ffmpeg. Either way the sound is saved as a 16 kHz mono WAV for the transcriber.
 """
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -62,13 +63,17 @@ def get_sound(source, out_dir, run=subprocess.run):
         return r
 
     r = _result(source, "link")
-    cmd = ["yt-dlp", "-q", "--no-warnings", "--ignore-config", "--no-playlist", "--retries", "0",
+    prog = ["yt-dlp"] if shutil.which("yt-dlp") else [sys.executable, "-m", "yt_dlp"]  # the module works too
+    cmd = prog + ["-q", "--no-warnings", "--ignore-config", "--no-playlist", "--retries", "0",
            "--extractor-retries", "0", "--fragment-retries", "0", "-f", "ba/b", "--write-info-json",
            "-o", str(out_dir / "audio.%(ext)s"), source]
     try:
         d = run(cmd, capture_output=True, text=True, timeout=TIMEOUT)
     except subprocess.TimeoutExpired:
         r.update(status="failed", reason=USE_FILE + " (the download timed out)")
+        return r
+    except FileNotFoundError:
+        r.update(status="failed", reason="The downloader (yt-dlp) isn't installed. Run the setup check again.")
         return r
     sound = next((p for p in out_dir.glob("audio.*") if p.suffix not in (".json", ".wav", ".part")), None)
     if d.returncode != 0 or sound is None:
